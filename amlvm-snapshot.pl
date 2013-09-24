@@ -27,7 +27,8 @@
 #
 #    SUDO
 #
-use lib '/usr/local/share/perl/5.8.4';
+#use lib '/usr/local/share/perl/5.8.4';
+use lib '/usr/lib/amanda/perl';
 use strict;
 use Getopt::Long;
 
@@ -166,7 +167,7 @@ sub execute {
         my $err_str = join("", @errors);
         chomp($err_str);
 
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "Failed to execute (status $?) `$full_cmd': $err_str",
             $Amanda::Script_App::ERROR
         );
@@ -259,7 +260,7 @@ sub resolve_device {
 
     if (!$mnt_device) {
         if ($self->{disk} eq $self->{device}) {
-            $self->print_to_server_and_die(
+            $self->print_to_server_and_die("",
                 "Failed to resolve a device from directory `$self->{disk}'. ",
                 $Amanda::Script_App::ERROR
             );
@@ -323,7 +324,7 @@ sub setup {
 
     # can only be executed in client context
     if ($self->{execute_where} ne "client") {
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "Script must be run on the client",
             $Amanda::Script_App::ERROR
         );
@@ -332,7 +333,7 @@ sub setup {
     # resolve paths, if not already provided.
     if (!defined $self->{lvcreate}) {
         chomp($self->{lvcreate} = `which lvcreate`);
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "lvcreate wasn't found.",
             $Amanda::Script_App::ERROR
         ) if $?;
@@ -340,7 +341,7 @@ sub setup {
 
     if (!defined $self->{lvdisplay}) {
         chomp($self->{lvdisplay} = `which lvdisplay`);
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "lvdisplay wasn't found.",
             $Amanda::Script_App::ERROR
         ) if $?;
@@ -348,7 +349,7 @@ sub setup {
 
     if (!defined $self->{lvremove}) {
         chomp($self->{lvremove} = `which lvremove`);
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "lvremove wasn't found.",
             $Amanda::Script_App::ERROR
         ) if $?;
@@ -356,7 +357,7 @@ sub setup {
 
     if (!defined $self->{vgdisplay}) {
         chomp($self->{vgdisplay} = `which vgdisplay`);
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "vgdisplay wasn't found.",
             $Amanda::Script_App::ERROR
         ) if $?;
@@ -364,7 +365,7 @@ sub setup {
 
     if (!defined $self->{blkid}) {
         chomp($self->{blkid} = `which blkid`);
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "blkid wasn't found.",
             $Amanda::Script_App::ERROR
         ) if $?;
@@ -374,7 +375,7 @@ sub setup {
     $self->resolve_device();
 
     if (!defined $self->{volume_group}) {
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "Failed to resolve device path and volume group.",
             $Amanda::Script_App::ERROR
         );
@@ -395,7 +396,7 @@ sub umount_snapshot {
     }
 
     if (!$mnt) {
-        $self->print_to_server_and_die(
+        $self->print_to_server_and_die("",
             "Failed to get mount point for snapshot device `$device'.",
             $Amanda::Script_App::ERROR
         );

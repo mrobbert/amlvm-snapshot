@@ -266,20 +266,9 @@ sub resolve_device {
     );
 
     if (!$mnt_device) {
-<<<<<<< HEAD:amlvm-snapshot.pl
-        if ($self->{disk} eq $self->{device}) {
-            $self->print_to_server_and_die("",
-                "Failed to resolve a device from directory `$self->{disk}'. ",
-                $Amanda::Script_App::ERROR
-            );
-        } else {
-            $mnt_device = $self->{device};
-            $fs_type = join("", $self->execute(1, "$self->{blkid} -s TYPE -o value $self->{device}"));
-=======
         $mnt_device = $self->{device};
         $fs_type = join("", $self->execute(1, "$self->{blkid} -s TYPE -o value $self->{device}"));
         if (defined $fs_type) {
->>>>>>> 04447276f10642c261ca1de5bafc1d00b89628f3:amlvm-snapshot
             chomp($fs_type);
         }
     }
